@@ -12,6 +12,7 @@ import { PermissionsAccessGuard } from '../domain/auth/guards/permissions.guard'
 import { InterfaceAuthService } from 'src/domain/auth/interfaces/authService.interface';
 import { UserLoginDto } from 'src/domain/user/dto/userLogin.dto';
 import { UserToJwt } from 'src/domain/user/dto/userToJwt.dto';
+import { UserRegistrationDto } from 'src/domain/user/dto/userToRegistration.dto';
 
 @Controller()
 export class AuthController {
@@ -23,13 +24,9 @@ export class AuthController {
   async login(@Body() user: UserLoginDto, @Res({passthrough: true}) res: Response): Promise<{ user: UserToJwt }> {
     return this.authService.login(user, res)
   }
-                     
-  @Get()
-  @RolesAccess(Roles.ALL)
-  @PermissionsAccess(Permissions.ALL)                            
-  @UseGuards(MyAuthGuard, RoleAccessGuard, PermissionsAccessGuard)
-  @Render('index')
-  getUser(@Req() req) {
-    return {name: req.user.email}
+   
+  @Post('registration')
+  async registration(@Body() user: UserRegistrationDto, @Res({passthrough: true}) res: Response) {
+    return this.authService.registration(user, res)
   }
 }

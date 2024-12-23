@@ -6,6 +6,8 @@ import { UserToJwt } from 'src/domain/user/dto/userToJwt.dto';
 import { InterfaceAuthService } from './interfaces/authService.interface';
 import { InterfacePostgresUserDbRepo } from 'src/infrastructure/postgres/interfaces/postgresDbRepo.interface';
 import { CONFIG } from 'src/config';
+import { UserRegistrationDto } from '../user/dto/userToRegistration.dto';
+import { MyRequest } from 'src/shared/myRequest';
 
 
 @Injectable()
@@ -35,9 +37,29 @@ export class AuthService implements InterfaceAuthService {
     }
   }
 
+  async registration(user: UserRegistrationDto, res: Response): Promise<UserToJwt> {
+    try {
+      const savedUser = await this.postgresDbRepo.registration(user)
+      const { password, ...userToJwt } = savedUser
+
+      const token = await this.generateJwtToken(userToJwt)
+
+      res.cookie('Authentication', token, {
+        httpOnly: true, // Только для сервера
+        secure: false, // Установите true, если используете HTTPS
+        sameSite: 'strict', // Защита от CSRF
+        signed: true
+      });
+
+      return userToJwt
+    } catch (e) {
+      throw new HttpException(e.message, e.status || 500)
+    }
+  }
+
   private async generateJwtToken(user: UserToJwt): Promise<string> {
     try {
-      return this.jwtService.signAsync(user, {secret: CONFIG.JWT_SECRET});
+      return this.jwtService.signAsync(user, { secret: CONFIG.JWT_SECRET });
     } catch (e) {
       throw new HttpException(e.message, e.status || 500)
     }
