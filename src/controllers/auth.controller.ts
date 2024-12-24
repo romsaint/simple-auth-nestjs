@@ -13,6 +13,7 @@ import { InterfaceAuthService } from 'src/domain/auth/interfaces/authService.int
 import { UserLoginDto } from 'src/domain/user/dto/userLogin.dto';
 import { UserToJwt } from 'src/domain/user/dto/userToJwt.dto';
 import { UserRegistrationDto } from 'src/domain/user/dto/userToRegistration.dto';
+import { UserResetPasswordDto } from 'src/domain/user/dto/userResetPassword.dto';
 
 @Controller()
 export class AuthController {
@@ -28,5 +29,10 @@ export class AuthController {
   @Post('registration')
   async registration(@Body() user: UserRegistrationDto, @Res({passthrough: true}) res: Response) {
     return this.authService.registration(user, res)
+  }
+  
+  @Post('reset_password')
+  async resetPassword(@Body() user: UserResetPasswordDto) {
+    return this.authService.resetPassword(user)
   }
 }

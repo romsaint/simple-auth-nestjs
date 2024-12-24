@@ -1,15 +1,12 @@
-import { CanActivate, ExecutionContext, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { Request, Response } from "express";
-import { concatAll, Observable } from "rxjs";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { Request } from "express";;
 import { CONFIG } from "src/config";
-import { AuthService } from "src/domain/auth/auth.service";
-import { UserToJwt } from "src/domain/user/dto/userToJwt.dto";
+import { MyJwtService } from "../jwt/jwt.service";
 
 @Injectable()
 export class MyAuthGuard implements CanActivate {
     constructor(
-        private readonly jwtService: JwtService
+        private readonly jwtService: MyJwtService
     ) { }
     async canActivate(context: ExecutionContext): Promise<boolean> {
         try {

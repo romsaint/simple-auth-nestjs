@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
-import { JwtModule, JwtService } from "@nestjs/jwt";
+import { JwtModule } from "@nestjs/jwt";
 import { UserServiceProvider } from "./user/providers/userService.provider";
 import { PostgreTypeOrmModule } from "src/infrastructure/postgres/postgre.module";
 import { AuthServiceProvider } from "./auth/providers/authService.provider";
 import { MyAuthGuard } from "./auth/guards/myAuth.guard";
 import { CONFIG } from "src/config";
+import { MyJwtService } from "./auth/jwt/jwt.service";
 
 @Module({
     imports: [
@@ -15,7 +16,7 @@ import { CONFIG } from "src/config";
         }),
         PostgreTypeOrmModule
     ],
-    providers: [UserServiceProvider, AuthServiceProvider, MyAuthGuard, JwtService],
-    exports: [UserServiceProvider, AuthServiceProvider, MyAuthGuard, JwtService]
+    providers: [UserServiceProvider, AuthServiceProvider, MyAuthGuard, MyJwtService],
+    exports: [UserServiceProvider, AuthServiceProvider, MyAuthGuard, MyJwtService]
 })
 export class DomainModule { }

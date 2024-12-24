@@ -28,4 +28,8 @@ export class PostgresUserDbRepo implements InterfacePostgresUserDbRepo {
     async save(user: UserToSave): Promise<User> {
         return this.UserDb.save(user);
     }
+
+    async updatePassword(user: User, password: string) {
+        return await this.UserDb.update({password}, user)
+    }
 }
