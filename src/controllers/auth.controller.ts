@@ -21,7 +21,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() user: UserLoginDto, @Res({passthrough: true}) res: Response): Promise<{ user: UserToJwt }> {
+  async login(@Body() user: UserLoginDto, @Res({passthrough: true}) res: Response): Promise<UserToJwt> {
     return this.authService.login(user, res)
   }
    

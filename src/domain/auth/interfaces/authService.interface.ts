@@ -4,6 +4,6 @@ import { UserToJwt } from "src/domain/user/dto/userToJwt.dto";
 import { UserRegistrationDto } from "src/domain/user/dto/userToRegistration.dto";
 
 export interface InterfaceAuthService {
-    login(user: UserLoginDto, res: Response): Promise<{ user: UserToJwt }>
+    login(user: UserLoginDto, res: Response): Promise<UserToJwt>
     registration(user: UserRegistrationDto, res: Response): Promise<UserToJwt>
 }

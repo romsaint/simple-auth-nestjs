@@ -1,4 +1,4 @@
-import { PostgresUserDbRepo } from "../postgresDb.repo";
+import { PostgresUserDbRepo } from "../postgresUserDb.repo";
 
 export const PostgresUserDbRepoProvider = {
     provide: 'PostgresUserDbRepo',

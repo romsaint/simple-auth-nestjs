@@ -4,6 +4,7 @@ import { UserRegistrationDto } from "src/domain/user/dto/userToRegistration.dto"
 import { User } from "src/domain/user/entities/user.entity";
 
 export interface InterfacePostgresUserDbRepo {
-    login(user: UserLoginDto): Promise<UserToJwt>
-    registration(user: UserRegistrationDto): Promise<User>
+    findByEmailAndUsername(email: string, username: string): Promise<User | null>
+    findByEmail(email: string): Promise<User | null>
+    save(user: Partial<User>): Promise<User>
 }
