@@ -10,7 +10,7 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({unique: true})
     @IsNotEmpty({ message: "Username is required" })
     username: string;
 
@@ -18,7 +18,7 @@ export class User {
     @IsNotEmpty({ message: "Password is required" })
     password: string;
 
-    @Column()
+    @Column({unique: true})
     @IsEmail({}, { message: "Invalid email format" })
     email: string;
 

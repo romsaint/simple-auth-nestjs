@@ -18,13 +18,14 @@ export class PostgresUserDbRepo {
 
     async registration(user: UserRegistrationDto): Promise<User> {
         try {
-            const userFound = await this.UserDb.findOne({ where: { username: user.username, email: user.email } })
-
-            if (userFound) {
+            const userFoundEmail = await this.UserDb.findOne({ where: { email: user.email } })
+            const userFoundUsername = await this.UserDb.findOne({ where: { username: user.username } })
+            console.log(user)
+            if (userFoundEmail || userFoundUsername) {
                 throw new NotFoundException('User already exists!')
             }
-
-            const userToSave: UserToSave = { ...user, permissions: [Permissions.DEFAULT_PERMISSION], roles: 'USER' }
+            const passwordHashed = await bcryptjs.hash(user.password, 10)
+            const userToSave: UserToSave = { ...user, permissions: [Permissions.DEFAULT_PERMISSION], roles: 'USER', password: passwordHashed }
 
             return await this.UserDb.save(userToSave)
         } catch (e) {
@@ -34,17 +35,19 @@ export class PostgresUserDbRepo {
 
     async login(user: UserLoginDto): Promise<UserToJwt> {
         try {
-            const userFound = await this.UserDb.findOne({ where: { username: user.username, email: user.email } })
+            const userFoundEmail = await this.UserDb.findOne({ where: { email: user.email } })
+            const userFoundUsername = await this.UserDb.findOne({ where: { username: user.username } })
 
-            if (!userFound) {
-                throw new NotFoundException('User not found!')
+            if (!userFoundEmail || !userFoundUsername) {
+                throw new NotFoundException('User does not exists!')
             }
 
-            if (!(await bcryptjs.compare(user.password, userFound.password))) {
+
+            if (!(await bcryptjs.compare(user.password, userFoundEmail.password))) {
                 throw new Error('Password does not match!')
             }
 
-            const { password, ...res } = userFound
+            const { password, ...res } = userFoundEmail
 
             return res
         } catch (e) {
