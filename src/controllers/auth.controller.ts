@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Inject, Post, Render, Req, Res, UseGuards, Version } from '@nestjs/common';
+import { Body, Controller, Get, Inject, NestMiddleware, Post, Render, Req, Res, UseGuards, Version } from '@nestjs/common';
 import { Response } from 'express';
 import { InterfaceAuthService } from 'src/domain/auth/interfaces/authService.interface';
 import { UserLoginDto } from 'src/domain/user/dto/userLogin.dto';
 import { UserToJwt } from 'src/domain/user/dto/userToJwt.dto';
 import { UserRegistrationDto } from 'src/domain/user/dto/userToRegistration.dto';
 import { UserResetPasswordDto } from 'src/domain/user/dto/userResetPassword.dto';
+
 
 @Controller('auth')
 export class AuthController {

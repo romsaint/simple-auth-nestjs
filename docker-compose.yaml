@@ -1,0 +1,35 @@
+
+services:
+  app:
+    build: .
+    container_name: full-auth-api
+    env_file:
+      - .env # Используем файл .env для переменных окружения
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:latest
+    container_name: full-auth-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_NAME} # Используем переменные из .env
+      POSTGRES_PASSWORD: ${POSTGRES_USER_PASS}
+      POSTGRES_DB: ${POSTGRES_DB_NAME} # Добавляем имя базы данных
+    volumes:
+      - postgres-data:/var/lib/postgresql/data # Сохраняем данные в volume
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+volumes:
+  postgres-data: # Создаем volume для данных PostgreSQL
+
+networks:
+  app-network: # Создаем сеть для взаимодействия контейнеров
