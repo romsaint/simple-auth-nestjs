@@ -4,14 +4,11 @@ import { UserLoginDto } from 'src/domain/user/dto/userLogin.dto';
 import { UserToJwt } from 'src/domain/user/dto/userToJwt.dto';
 import { InterfaceAuthService } from './interfaces/authService.interface';
 import { InterfacePostgresUserDbRepo } from 'src/infrastructure/postgres/interfaces/postgresDbRepo.interface';
-import { CONFIG } from 'src/config';
 import { UserRegistrationDto } from '../user/dto/userToRegistration.dto';
-import { MyRequest } from 'src/shared/myRequest';
 import { UserToSave } from '../user/dto/userToSave.dto';
 import * as bcryptjs from 'bcryptjs'
 import { Permissions } from './permissions/permissions';
 import { MyJwtService } from './jwt/jwt.service';
-import { User } from '../user/entities/user.entity';
 import { UserResetPasswordDto } from '../user/dto/userResetPassword.dto';
 
 
